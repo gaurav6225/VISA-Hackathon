@@ -55,6 +55,7 @@ padding-right: 0;
                             <img src='/media/{{i.image}}' class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title" id="namepr{{i.product_id}}">{{i.product_name}}</h5>
+                                <p class="card-text" id="pricepr{{i.product_id}}">Price: Rs {{i.price}}</p>
                                 <p class="card-text">{{i.desc|slice:"0:53"}}...</p>
                                 <span id="divpr{{i.product_id}}" class="divpr">
                                     <button id="pr{{i.product_id}}" class="btn btn-primary cart">Add To Cart</button>
@@ -101,7 +102,8 @@ $('.divpr').on('click','button.cart',function() {
     } else {
         qty=1;
         name=document.getElementById('name'+idstr).innerHTML;
-        cart[idstr] = [qty, name];
+        price=document.getElementById('price'+idstr).innerHTML.slice(10, );
+        cart[idstr] = [qty, name, price];
     }
     updateCart(cart);
     

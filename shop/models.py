@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class UserRegistration(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    is_merchant = models.BooleanField(default = False)
+    is_merchant = models.BooleanField(default = False, blank = True)
     address = models.CharField(max_length=500)
     zipcode = models.CharField(max_length=6)
     phone = models.CharField(max_length=10)
@@ -14,7 +14,7 @@ class UserRegistration(models.Model):
         return self.user.username
 
 class Product(models.Model):
-    merchant = models.ForeignKey(UserRegistration, on_delete=models.CASCADE)
+    merchant = models.ForeignKey('UserRegistration', on_delete=models.CASCADE, null = True)
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=50)
     category = models.CharField(max_length=50,default="")

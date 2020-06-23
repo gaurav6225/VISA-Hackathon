@@ -32,16 +32,25 @@ if($.isEmptyObject(cart))
 }
 else
 {
+    let total=0;
 for(var item in cart)
 {
     let name=cart[item][1];
     let qty=cart[item][0];
+    let price=cart[item][2]*qty;
+    total=total+price;
     let mystr=`<li class="list-group-item d-flex justify-content-between align-items-center">
                     ${name}
                     <span class="badge badge-primary badge-pill">${qty}</span>
+                    <span class="badge badge-primary badge-pill">Rs. ${price}</span>
                 </li>`;
     $('#items').append(mystr);
 }
+let mystr=`<li class="list-group-item d-flex justify-content-between align-items-center">
+                    Total Payable Amount
+                    <span class="badge badge-primary badge-pill">Rs. ${total}</span>
+                </li>`;
+    $('#items').append(mystr);
 }
 var count=0;
 for(var i=0;i<Object.keys(cart).length;i++)

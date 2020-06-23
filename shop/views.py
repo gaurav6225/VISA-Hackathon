@@ -1,14 +1,41 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as login_user
 from .models import Product, Contact, Order, UserRegistration
 from math import ceil
+from django.urls import reverse, reverse_lazy
+from .forms import UserForm
+
+
+def register(request):
+
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+
+        if user_form.is_valid():
+            # Saving directly to DB
+            user = user_form.save()
+            # Hashing pass
+            user.set_password(user.password)
+            user.save()
+            registered = True
+            return HttpResponseRedirect(reverse('/shop/login/'))
+        else:
+            print(user_form.errors)
+
+    # if request.method == 'GET':
+    else:
+        user_form = UserForm()
+
+    return render(request, 'shop/register.html', {'user_form':user_form})
+
 
 
 def home(request):
-	return HttpResponseRedirect(reverse('login'))
+    return render(request,'shop/register.html')
+	# return HttpResponseRedirect(reverse('register'))
 
 def login(request):
     if request.method == 'POST':
@@ -21,7 +48,7 @@ def login(request):
                 return HttpResponseRedirect(reverse('merchant_list'))
         else:
             messages.add_message(request,messages.ERROR,"Invalid password. Please try again.")
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse_lazy('login'))
     else:
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse('home'))
@@ -36,11 +63,6 @@ def merchant_list(request):
 
 @login_required
 def product_list(request,merchant_id):
-    # products=Product.objects.all()
-    # print(products)
-    # n=len(products)
-    # nSlides=n//4+ceil((n/4)-(n//4))
-    # params={'no_of_slides':nSlides, 'range':range(1,nSlides), 'product':products}
     allProds=[]
     catprods= Product.objects.values('category','product_id')
     cats={item['category'] for item in catprods}
