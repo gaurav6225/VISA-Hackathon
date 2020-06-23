@@ -40,23 +40,16 @@
 
             <div class="col-4">
                 <div class="card">
-                    <h4 class="card-header text-center">Login</h4>
+                    <h4 class="card-header text-center">Register</h4>
                     <div class="card-block">
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="form-group">
-                                <label>Username</label>
-                                <input name="username" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input name="password" type="password" class="form-control">
-                            </div>
-                            <a href="/shop/register">Not Registered Yet? Sign Up Here!</a>
+                            {{ user_form.as_p}}
                             <div class="mx-auto text-center">
-                                <input type="submit" value="Login" class="btn btn-primary">
+                                <input type="submit" value="Create Account" class="btn btn-primary">
                             </div>
                         </form>
+                        <a href="/shop/login">Already Registered? Sign In Here!</a>
                     </div>
                 </div>
             </div>
